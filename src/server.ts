@@ -30,7 +30,7 @@ const app: Express = express();
 // Routes
 // app.use('/health-check', healthCheckRouter);
 // app.use('/users', userRouter);
-app.get('/', (req, res) => {
+app.get('/', (req: express.Request, res: express.Response) => {
   res.status(200).send('Welcome to the API');
 });
 
