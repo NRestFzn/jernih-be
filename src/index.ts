@@ -1,4 +1,3 @@
-import {env} from '@/common/utils/envConfig';
-import {app, logger} from '@/server';
+import {app} from '@/server';
 
 export default app;
