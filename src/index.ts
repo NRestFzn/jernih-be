@@ -18,4 +18,4 @@ import {app, logger} from './server';
 // process.on('SIGINT', onCloseSignal);
 // process.on('SIGTERM', onCloseSignal);
 
-module.exports = app;
+export default app;
