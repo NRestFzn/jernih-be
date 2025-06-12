@@ -1,5 +1,5 @@
 import cors from 'cors';
-import express, {type Express} from 'express';
+import express, {Request, Response, type Express} from 'express';
 import helmet from 'helmet';
 import {pino} from 'pino';
 
@@ -30,6 +30,9 @@ app.use(requestLogger);
 // Routes
 app.use('/health-check', healthCheckRouter);
 app.use('/users', userRouter);
+app.get('/', (req: Request, res: Response) => {
+  res.send('welcome');
+});
 
 // Swagger UI
 app.use(openAPIRouter);
