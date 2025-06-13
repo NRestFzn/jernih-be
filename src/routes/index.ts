@@ -1,6 +1,6 @@
 import express, {Request, Response, Router} from 'express';
 import v1Routes from './v1';
-const routes: Router = express.Router();
+const routes = express.Router();
 
 routes.get('/', (req: Request, res: Response) => {
   res.send('Welcome');

@@ -10,7 +10,7 @@ import {env} from './common/utils/envConfig';
 import indexRouter from './routes/index';
 
 const logger = pino({name: 'server start'});
-const app: Express = express();
+const app = express();
 
 // Set the application to trust the reverse proxy
 app.set('trust proxy', true);
