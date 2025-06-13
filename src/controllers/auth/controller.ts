@@ -1,8 +1,8 @@
 import {Request, Response} from 'express';
-import router from 'router/v1';
+import routes from 'routes/v1';
 import authService from './service';
 
-router.post('/auth/signin', async (req: Request, res: Response) => {
+routes.post('/auth/signin', async (req: Request, res: Response) => {
   const formData = req.body;
 
   const serviceResponse = await authService.signIn(formData);
@@ -10,7 +10,7 @@ router.post('/auth/signin', async (req: Request, res: Response) => {
   res.status(serviceResponse.statusCode).json(serviceResponse);
 });
 
-router.post('/auth/signup', async (req: Request, res: Response) => {
+routes.post('/auth/signup', async (req: Request, res: Response) => {
   const formData = req.body;
 
   const serviceResponse = await authService.signUp(formData);
