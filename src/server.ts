@@ -12,13 +12,17 @@ import indexRouter from './routes/index';
 const logger = pino({name: 'server start'});
 const app: Express = express();
 
+const optCors: cors.CorsOptions = {
+  origin: ['http://localhost:3000', 'http://localhost:5173'],
+};
+
 // Set the application to trust the reverse proxy
 app.set('trust proxy', true);
 
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(cors());
+app.use(cors(optCors));
 app.use(helmet());
 app.use(rateLimiter);
 
