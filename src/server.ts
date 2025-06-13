@@ -13,6 +13,7 @@ const logger = pino({name: 'server start'});
 const app: Express = express();
 
 const optCors: cors.CorsOptions = {
+  credentials: true,
   origin: ['http://localhost:3000', 'http://localhost:5173'],
 };
 
