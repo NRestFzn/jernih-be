@@ -1,12 +1,23 @@
-import type {ErrorRequestHandler, RequestHandler} from 'express';
+import type {
+  ErrorRequestHandler,
+  NextFunction,
+  Request,
+  RequestHandler,
+  Response,
+} from 'express';
 import {StatusCodes} from 'http-status-codes';
 import {ValidationError} from 'yup';
 
-const unexpectedRequest: RequestHandler = (_req, res) => {
+const unexpectedRequest: RequestHandler = (_req, res: Response) => {
   res.status(StatusCodes.NOT_FOUND).send('Not Found');
 };
 
-const addErrorToRequestLog: ErrorRequestHandler = (err, _req, res, next) => {
+const addErrorToRequestLog: ErrorRequestHandler = (
+  err: any,
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   if (err instanceof ValidationError) {
     const errType = `Yup Validation Error:`;
     const message = err.errors.join('<br/>') || 'Yup Validation Error !';
