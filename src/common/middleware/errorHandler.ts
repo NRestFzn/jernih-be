@@ -8,7 +8,7 @@ import type {
 import {StatusCodes} from 'http-status-codes';
 import {ValidationError} from 'yup';
 
-const unexpectedRequest: RequestHandler = (_req, res: Response) => {
+const unexpectedRequest: RequestHandler = (_req: Request, res: Response) => {
   res.status(StatusCodes.NOT_FOUND).send('Not Found');
 };
 
