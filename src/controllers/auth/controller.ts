@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import routes from 'routes/v1';
+import routes from '../../routes/v1';
 import authService from './service';
 
 routes.post('/auth/signin', async (req: Request, res: Response) => {

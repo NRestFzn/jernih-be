@@ -1,6 +1,6 @@
 import {initializeApp, cert, ServiceAccount} from 'firebase-admin/app';
 import {getFirestore} from 'firebase-admin/firestore';
-import {env} from 'common/utils/envConfig';
+import {env} from '../common/utils/envConfig';
 
 const serviceAccount = {
   type: env.FIRESTORE_TYPE,

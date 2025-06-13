@@ -1,11 +1,11 @@
-import db from 'config/firebase.config';
+import db from '../../config/firebase.config';
 import {LoginType, RegisterType, loginSchema, registerSchema} from './schema';
-import {ServiceResponse} from 'common/models/serviceResponse';
+import {ServiceResponse} from '../../common/models/serviceResponse';
 import {StatusCodes} from 'http-status-codes';
 import {v4} from 'uuid';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import {env} from 'common/utils/envConfig';
+import {env} from '../../common/utils/envConfig';
 
 class AuthService {
   async signIn(formData: LoginType) {
