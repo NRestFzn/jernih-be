@@ -36,7 +36,7 @@ routes.post(
 
     const files = req.files as {[fieldname: string]: Express.Multer.File[]};
 
-    const savedFilePaths = await Multer.memoryStorageHandler(files);
+    const savedFilePaths: string[] = await Multer.vercelBlobHandler(files);
 
     const serviceResponse = await postsService.createPosts(
       req.userLogin.id,

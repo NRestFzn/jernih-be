@@ -5,7 +5,7 @@ import path from 'path';
 import multer from 'multer';
 import slugify from 'slugify';
 import ResponseError from './response/ResponseError';
-
+import {put} from '@vercel/blob';
 const defaultFieldSize = 100 * 1024 * 1024; // 100mb
 const defaultFileSize = 100 * 1024 * 1024; // 100mb
 const defaultDestination = 'public/uploads';
@@ -191,4 +191,34 @@ async function memoryStorageHandler(files: {
   return savedFilePaths;
 }
 
-export default {useMulter, getDefaultUploadFileOptions, memoryStorageHandler};
+async function vercelBlobHandler(files: {
+  [fieldname: string]: Express.Multer.File[];
+}): Promise<string[]> {
+  const savedFilePaths: string[] = [];
+
+  if (files && Object.keys(files).length > 0) {
+    for (const fieldname in files) {
+      const fileArray = files[fieldname];
+
+      for (const file of fileArray) {
+        const filename = `${Date.now()}-${slugify(file.originalname)}`;
+
+        const blob = await put(`posts/${filename}`, file.buffer, {
+          access: 'public',
+          contentType: file.mimetype,
+        });
+
+        savedFilePaths.push(blob.url);
+      }
+    }
+  }
+
+  return savedFilePaths;
+}
+
+export default {
+  useMulter,
+  getDefaultUploadFileOptions,
+  memoryStorageHandler,
+  vercelBlobHandler,
+};
