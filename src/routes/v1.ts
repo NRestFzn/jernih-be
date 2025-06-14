@@ -4,3 +4,4 @@ const routes = express.Router();
 
 export default routes;
 require('../controllers/auth/controller');
+require('../controllers/posts/controller');

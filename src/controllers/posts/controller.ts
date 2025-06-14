@@ -1,0 +1,80 @@
+import Multer from '../../modules/Multer';
+import asyncHandler from 'express-async-handler';
+import {Request, Response} from 'express';
+import routes from '../../routes/v1';
+import postsService from './service';
+import {postsSchema} from './schema';
+import authorization from '../../common/middleware/Authorization';
+
+const uploadFile = Multer.useMulter(
+  Multer.getDefaultUploadFileOptions({
+    dest: 'public/uploads',
+    onlyImages: true,
+  })
+).fields([{name: 'images', maxCount: 10}]);
+
+// const setFileToBody = asyncHandler(async function setFileToBody(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   req.body.file =
+//     req.files &&
+//     (req.files as {[fieldname: string]: Express.Multer.File[]}).file;
+//   next();
+// });
+
+routes.post(
+  '/posts',
+  authorization,
+  uploadFile,
+  // setFileToBody,
+  asyncHandler(async (req: Request, res: Response) => {
+    const formData = req.body;
+
+    const validateForm = postsSchema.validateSync(formData);
+
+    const files = req.files as {[fieldname: string]: Express.Multer.File[]};
+
+    const savedFilePaths = await Multer.memoryStorageHandler(files);
+
+    const serviceResponse = await postsService.createPosts(
+      req.userLogin.id,
+      formData,
+      savedFilePaths
+    );
+
+    res.status(serviceResponse.statusCode).json(serviceResponse);
+  })
+);
+
+routes.get(
+  '/posts',
+  asyncHandler(async (req: Request, res: Response) => {
+    const serviceResponse = await postsService.getAllPosts();
+
+    res.status(serviceResponse.statusCode).json(serviceResponse);
+  })
+);
+
+routes.get(
+  '/posts/:id',
+  asyncHandler(async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const serviceResponse = await postsService.getPostsById(id);
+
+    res.status(serviceResponse.statusCode).json(serviceResponse);
+  })
+);
+
+routes.delete(
+  '/posts/:id',
+  asyncHandler(async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const serviceResponse = await postsService.deletePosts(id);
+
+    res.status(serviceResponse.statusCode).json(serviceResponse);
+  })
+);

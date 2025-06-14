@@ -6,6 +6,7 @@ import {v4} from 'uuid';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {env} from '../../common/utils/envConfig';
+import {UserType} from '../../controllers/user/schema';
 
 class AuthService {
   async signIn(formData: LoginType) {
@@ -23,7 +24,7 @@ class AuthService {
       );
     }
 
-    const userData = findUser.docs[0].data();
+    const userData = findUser.docs[0].data() as UserType;
 
     const validatePassword = bcrypt.compareSync(
       formData.password,
@@ -38,11 +39,8 @@ class AuthService {
       );
     }
 
-    delete userData.password;
-    userData.createdAt = userData.createdAt.toDate();
-    userData.updatedAt = userData.updatedAt.toDate();
+    const payload = {...userData};
 
-    const payload = {userData};
     const token = jwt.sign(payload, env.JWT_SECRET_ACCESS_TOKEN as string, {
       expiresIn: '24h',
     });
@@ -80,17 +78,9 @@ class AuthService {
 
     const userData = (
       await userRef.where('email', '==', formData.email).get()
-    ).docs[0].data();
+    ).docs[0].data() as UserType;
 
-    delete userData.password;
-
-    const user = {
-      ...userData,
-      createdAt: userData.createdAt.toDate(),
-      updatedAt: userData.updatedAt.toDate(),
-    };
-
-    const payload = {user};
+    const payload = {userData};
     const token = jwt.sign(payload, env.JWT_SECRET_ACCESS_TOKEN as string, {
       expiresIn: '24h',
     });
