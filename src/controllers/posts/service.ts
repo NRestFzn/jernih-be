@@ -107,6 +107,33 @@ class PostsService {
 
     return ServiceResponse.success('success', null, StatusCodes.OK);
   }
+
+  async getAllMyPosts(userId: string) {
+    const postRef = db.collection('posts').where('userId', '==', userId);
+
+    const postsData = await postRef.get();
+
+    const postDataWithPromise = postsData.docs.map(async (postsDoc) => {
+      const postData = postsDoc.data();
+
+      const postsImageSnapshot = await postsDoc.ref
+        .collection('postsImages')
+        .get();
+
+      const postsImagesData = postsImageSnapshot.docs.map((postsImageDoc) =>
+        postsImageDoc.data()
+      );
+
+      return {
+        ...postData,
+        postsImage: postsImagesData,
+      };
+    });
+
+    const finalResult = await Promise.all(postDataWithPromise);
+
+    return ServiceResponse.success('success', finalResult, StatusCodes.OK);
+  }
 }
 
 const postsService = new PostsService();

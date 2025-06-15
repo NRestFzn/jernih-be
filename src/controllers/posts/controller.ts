@@ -64,6 +64,16 @@ routes.get(
 );
 
 routes.get(
+  '/posts-me',
+  authorization,
+  asyncHandler(async (req: Request, res: Response) => {
+    const serviceResponse = await postsService.getAllMyPosts(req.userLogin.id);
+
+    res.status(serviceResponse.statusCode).json(serviceResponse);
+  })
+);
+
+routes.get(
   '/posts/:id',
   asyncHandler(async (req: Request, res: Response) => {
     const id = req.params.id;
