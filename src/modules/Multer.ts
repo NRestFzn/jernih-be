@@ -191,25 +191,36 @@ async function memoryStorageHandler(files: {
   return savedFilePaths;
 }
 
+interface UploadedField {
+  fieldName: string;
+  paths: string[];
+}
+
 async function vercelBlobHandler(files: {
   [fieldname: string]: Express.Multer.File[];
-}): Promise<string[]> {
-  const savedFilePaths: string[] = [];
+}): Promise<UploadedField[]> {
+  const savedFilePaths: UploadedField[] = [];
 
   if (files && Object.keys(files).length > 0) {
     for (const fieldname in files) {
       const fileArray = files[fieldname];
+      const filePaths: string[] = [];
 
       for (const file of fileArray) {
         const filename = `${Date.now()}-${slugify(file.originalname)}`;
 
-        const blob = await put(`posts/${filename}`, file.buffer, {
+        const blob = await put(`uploads/${filename}`, file.buffer, {
           access: 'public',
           contentType: file.mimetype,
         });
 
-        savedFilePaths.push(blob.url);
+        filePaths.push(blob.url);
       }
+
+      savedFilePaths.push({
+        fieldName: fieldname,
+        paths: filePaths,
+      });
     }
   }
 

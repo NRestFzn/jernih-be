@@ -11,7 +11,9 @@ export const postsSchema = yup.object().shape({
   city: yup.string().required('Kabupaten/Kota wajib di isi'),
   district: yup.string().required('Kecamatan'),
   detailLocation: yup.string().required('Detail lokasi wajib di isi'),
-  googleMapsLocation: yup.string().nullable(),
+  contactPerson: yup.string().required('Detail lokasi wajib di isi'),
+  embedMaps: yup.string().nullable(),
+  // banner: yup.string().required(),
 });
 
 export type CreatePostType = yup.InferType<typeof postsSchema>;
