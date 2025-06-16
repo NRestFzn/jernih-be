@@ -134,6 +134,14 @@ class PostsService {
 
     return ServiceResponse.success('success', finalResult, StatusCodes.OK);
   }
+
+  async updatePosts(postId: string, formData: CreatePostType) {
+    const postsRef = db.collection('posts').doc(postId);
+
+    const postsSnapshot = await postsRef.update(formData);
+
+    return ServiceResponse.success('success', postsSnapshot, StatusCodes.OK);
+  }
 }
 
 const postsService = new PostsService();

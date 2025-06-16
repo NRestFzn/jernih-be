@@ -86,10 +86,33 @@ routes.get(
 
 routes.delete(
   '/posts/:id',
+  authorization,
   asyncHandler(async (req: Request, res: Response) => {
     const id = req.params.id;
 
     const serviceResponse = await postsService.deletePosts(id);
+
+    res.status(serviceResponse.statusCode).json(serviceResponse);
+  })
+);
+
+routes.put(
+  '/posts/:id',
+  authorization,
+  uploadFile,
+  asyncHandler(async (req: Request, res: Response) => {
+    let formData = req.body;
+
+    const files = req.files as {[fieldname: string]: Express.Multer.File[]};
+
+    const validateForm = postsSchema.validateSync(formData);
+
+    const savedFilePaths = await Multer.vercelBlobHandler(files);
+
+    const serviceResponse = await postsService.updatePosts(req.params.id, {
+      ...formData,
+      banner: savedFilePaths.find((e) => e.fieldName == 'banner')?.paths[0],
+    });
 
     res.status(serviceResponse.statusCode).json(serviceResponse);
   })
