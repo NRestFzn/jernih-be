@@ -14,6 +14,7 @@ export const postsSchema = yup.object().shape({
   contactPerson: yup.string().required('Detail lokasi wajib di isi'),
   embedMaps: yup.string().nullable(),
   // banner: yup.string().required(),
+  donationLink: yup.string().required('Link donasi wajib di isi'),
 });
 
 export type CreatePostType = yup.InferType<typeof postsSchema>;
