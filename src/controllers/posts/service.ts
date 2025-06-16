@@ -135,12 +135,61 @@ class PostsService {
     return ServiceResponse.success('success', finalResult, StatusCodes.OK);
   }
 
-  async updatePosts(postId: string, formData: CreatePostType) {
+  async updatePosts(
+    postId: string,
+    formData: CreatePostType,
+    postImagesPath: string[]
+  ) {
     const postsRef = db.collection('posts').doc(postId);
 
-    const postsSnapshot = await postsRef.update(formData);
+    const postsSnapshot = await postsRef.get();
 
-    return ServiceResponse.success('success', postsSnapshot, StatusCodes.OK);
+    if (!postsSnapshot.exists) {
+      return ServiceResponse.failure(
+        'Image not found',
+        null,
+        StatusCodes.NOT_FOUND
+      );
+    }
+
+    await postsRef.update(formData);
+
+    if (postImagesPath.length > 0) {
+      for (let i = 0; i < postImagesPath.length; i++) {
+        postsRef.collection('postsImages').doc(v4()).set({
+          postId,
+          filePath: postImagesPath[i],
+        });
+      }
+    }
+
+    return ServiceResponse.success(
+      'success',
+      postsSnapshot.data(),
+      StatusCodes.OK
+    );
+  }
+
+  async deletePostsImage(postId: string, imageId: string) {
+    const imageRef = db
+      .collection('posts')
+      .doc(postId)
+      .collection('postsImages')
+      .doc(imageId);
+
+    const imageSnapshot = await imageRef.get();
+
+    if (!imageSnapshot.exists) {
+      return ServiceResponse.failure(
+        'Image not found',
+        null,
+        StatusCodes.NOT_FOUND
+      );
+    }
+
+    await imageRef.delete();
+
+    return ServiceResponse.success('success', null, StatusCodes.OK);
   }
 }
 

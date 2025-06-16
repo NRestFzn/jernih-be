@@ -109,10 +109,29 @@ routes.put(
 
     const savedFilePaths = await Multer.vercelBlobHandler(files);
 
-    const serviceResponse = await postsService.updatePosts(req.params.id, {
-      ...formData,
-      banner: savedFilePaths.find((e) => e.fieldName == 'banner')?.paths[0],
-    });
+    const serviceResponse = await postsService.updatePosts(
+      req.params.id,
+      {
+        ...formData,
+        banner: savedFilePaths.find((e) => e.fieldName == 'banner')?.paths[0],
+      },
+      savedFilePaths.find((e) => e.fieldName == 'documentations')?.paths ?? []
+    );
+
+    res.status(serviceResponse.statusCode).json(serviceResponse);
+  })
+);
+
+routes.delete(
+  '/posts-image/:postId/:imageId',
+  authorization,
+  asyncHandler(async (req: Request, res: Response) => {
+    const {postId, imageId} = req.params;
+
+    const serviceResponse = await postsService.deletePostsImage(
+      postId,
+      imageId
+    );
 
     res.status(serviceResponse.statusCode).json(serviceResponse);
   })
