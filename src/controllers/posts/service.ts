@@ -22,8 +22,9 @@ class PostsService {
 
     if (postImagesPath.length > 0) {
       for (let i = 0; i < postImagesPath.length; i++) {
-        postsRef.doc(postId).collection('postsImages').doc(v4()).set({
-          id: v4(),
+        const postImageId = v4();
+        postsRef.doc(postId).collection('postsImages').doc(postImageId).set({
+          id: postImageId,
           postId,
           filePath: postImagesPath[i],
         });
