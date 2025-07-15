@@ -3,10 +3,10 @@ import express, {type Express} from 'express';
 import helmet from 'helmet';
 import {pino} from 'pino';
 
-import errorHandler from './common/middleware/errorHandler';
-import rateLimiter from './common/middleware/rateLimiter';
-import requestLogger from './common/middleware/requestLogger';
-import indexRouter from './routes/index';
+import errorHandler from '@/common/middleware/errorHandler';
+import rateLimiter from '@/common/middleware/rateLimiter';
+import requestLogger from '@/common/middleware/requestLogger';
+import indexRouter from '@/routes/index';
 import path from 'path';
 
 const logger = pino({name: 'server start'});
