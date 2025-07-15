@@ -1,6 +1,6 @@
 import express, {Router} from 'express';
 
-const routes = express.Router();
+const routes: Router = express.Router();
 
 export default routes;
 require('../controllers/auth/controller');
