@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
-import routes from '@/routes/v1';
+import routes from '../../routes/v1';
 import authService from './service';
-import asyncHandler from '@/modules/AsyncHandler';
+import asyncHandler from '../../modules/AsyncHandler';
 
 routes.post(
   '/auth/signin',
