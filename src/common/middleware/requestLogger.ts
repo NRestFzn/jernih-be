@@ -4,7 +4,7 @@ import {StatusCodes} from 'http-status-codes';
 import pino from 'pino';
 import pinoHttp from 'pino-http';
 
-import {env} from '../../common/utils/envConfig';
+import {env} from '../utils/envConfig';
 
 const logger = pino({
   level: env.isProduction ? 'info' : 'debug',
