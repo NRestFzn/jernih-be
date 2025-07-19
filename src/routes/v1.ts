@@ -7,3 +7,4 @@ require('../controllers/auth/controller');
 require('../controllers/posts/controller');
 require('../controllers/techstack/controller');
 require('../controllers/experience/controller');
+require('../controllers/project/controller');
