@@ -4,6 +4,7 @@ import {ServiceResponse} from '../../common/models/serviceResponse';
 import {StatusCodes} from 'http-status-codes';
 import {v4} from 'uuid';
 import {del} from '@vercel/blob';
+import ResponseError from 'modules/response/ResponseError';
 
 class ExperienceService {
   async createExperience(userId: string, formData: CreateExperienceType) {
@@ -46,11 +47,7 @@ class ExperienceService {
     const experienceSnapshot = await experienceRef.get();
 
     if (!experienceSnapshot.exists) {
-      return ServiceResponse.failure(
-        'Data not found',
-        null,
-        StatusCodes.NOT_FOUND
-      );
+      throw new ResponseError.NotFound('Data not found');
     }
 
     return ServiceResponse.success(
@@ -66,11 +63,7 @@ class ExperienceService {
     const findExperience = await experienceRef.get();
 
     if (!findExperience.exists) {
-      return ServiceResponse.failure(
-        'Data not found',
-        null,
-        StatusCodes.NOT_FOUND
-      );
+      throw new ResponseError.NotFound('Data not found');
     }
 
     await experienceRef.delete();
@@ -86,11 +79,7 @@ class ExperienceService {
     const experienceSnapshot = await experienceRef.get();
 
     if (!experienceSnapshot.exists) {
-      return ServiceResponse.failure(
-        'Data not found',
-        null,
-        StatusCodes.NOT_FOUND
-      );
+      throw new ResponseError.NotFound('Data not found');
     }
 
     await experienceRef.update(formData);

@@ -1,13 +1,13 @@
 import cors from 'cors';
-import express, {type Express} from 'express';
+import express, {ErrorRequestHandler, type Express} from 'express';
 import helmet from 'helmet';
 import {pino} from 'pino';
 
-import errorHandler from './common/middleware/errorHandler';
 import rateLimiter from './common/middleware/rateLimiter';
 import requestLogger from './common/middleware/requestLogger';
 import indexRouter from './routes/index';
 import path from 'path';
+import expressErrorResponse from './common/middleware/errorHandler';
 
 const logger = pino({name: 'server start'});
 const app: Express = express();
@@ -42,6 +42,6 @@ app.use(requestLogger);
 app.use(indexRouter);
 
 // Error handlers
-app.use(errorHandler());
+app.use(expressErrorResponse as ErrorRequestHandler);
 
 export {app, logger};

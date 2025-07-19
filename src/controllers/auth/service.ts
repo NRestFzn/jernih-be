@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {env} from '../../common/utils/envConfig';
 import {UserType} from '../../controllers/user/schema';
+import ResponseError from 'modules/response/ResponseError';
 
 class AuthService {
   async signIn(formData: LoginType) {
@@ -17,11 +18,7 @@ class AuthService {
     const findUser = await userRef.where('email', '==', formData.email).get();
 
     if (findUser.empty) {
-      return ServiceResponse.failure(
-        'User not found',
-        null,
-        StatusCodes.NOT_FOUND
-      );
+      throw new ResponseError.NotFound('Login failed, invalid credentials');
     }
 
     const userData = findUser.docs[0].data() as UserType;
@@ -32,11 +29,7 @@ class AuthService {
     );
 
     if (!validatePassword) {
-      return ServiceResponse.failure(
-        'Email and Password is incorrect',
-        null,
-        StatusCodes.UNAUTHORIZED
-      );
+      throw new ResponseError.NotFound('Login failed, invalid credentials');
     }
 
     const payload = {...userData};
@@ -58,9 +51,8 @@ class AuthService {
       .get();
 
     if (!duplicateEmail.empty) {
-      return ServiceResponse.failure(
+      throw new ResponseError.BaseResponse(
         'Email already used',
-        null,
         StatusCodes.CONFLICT
       );
     }

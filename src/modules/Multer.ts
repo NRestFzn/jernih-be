@@ -6,8 +6,8 @@ import multer from 'multer';
 import slugify from 'slugify';
 import ResponseError from './response/ResponseError';
 import {put} from '@vercel/blob';
-const defaultFieldSize = 100 * 1024 * 1024; // 100mb
-const defaultFileSize = 100 * 1024 * 1024; // 100mb
+const defaultFieldSize = 2 * 1024 * 1024; // 2mb
+const defaultFileSize = 2 * 1024 * 1024; // 2mb
 const defaultDestination = 'public/uploads';
 
 // extension
@@ -126,7 +126,7 @@ interface UploadFileOptionsParams {
 function getDefaultUploadFileOptions(params: UploadFileOptionsParams = {}) {
   const {
     dest = 'public/uploads/',
-    maxSizeUpload = 25,
+    maxSizeUpload = 2,
     onlyImages = false,
     onlyDocuments = false,
     allowedExt = [],

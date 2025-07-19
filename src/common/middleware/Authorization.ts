@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import {env} from '../../common/utils/envConfig';
 import {NextFunction, Request, Response} from 'express';
 import {UserType} from 'controllers/user/schema';
+import ResponseError from 'modules/response/ResponseError';
 
 // Extend Express Request interface to include userLogin
 declare global {
@@ -21,25 +22,22 @@ async function authorization(req: Request, res: Response, next: NextFunction) {
       async (err, decoded) => {
         if (err) {
           if (err.name === 'TokenExpiredError') {
-            res.status(401).json({message: err.message});
-            return;
+            throw new ResponseError.Unauthorized(err.message);
           } else {
-            res.status(401).json({message: err.message});
-            return;
+            throw new ResponseError.Unauthorized(err.message);
           }
         } else {
           if (decoded) {
             req.userLogin = decoded;
             next();
           } else {
-            res.status(403).json({message: 'Invalid token format'});
-            return;
+            throw new ResponseError.Forbidden('Invalid token format');
           }
         }
       }
     );
   } else {
-    res.status(403).json({message: 'Please login or register first'});
+    throw new ResponseError.Forbidden('Please login or register first');
   }
 }
 

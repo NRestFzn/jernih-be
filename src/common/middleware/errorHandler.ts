@@ -1,66 +1,50 @@
-import type {
-  ErrorRequestHandler,
-  NextFunction,
-  Request,
-  RequestHandler,
-  Response,
-} from 'express';
-import {StatusCodes} from 'http-status-codes';
-import {ValidationError} from 'yup';
-import multer from 'multer';
+import type {NextFunction, Request, Response} from 'express';
 import _ from 'lodash';
+import ResponseError from 'modules/response/ResponseError';
+import multer from 'multer';
 
-const unexpectedRequest: RequestHandler = (_req: Request, res: Response) => {
-  res.status(StatusCodes.NOT_FOUND).send('Not Found');
-};
-
-function generateErrorResponseError(
+function generateErrorResponse(
   e: Error,
   code: Number
 ):
-  | string
   | {
+      success: boolean;
       code: Number;
       message: string;
-    } {
-  return _.isObject(e.message) ? e.message : {code, message: e.message};
+    }
+  | string {
+  return _.isObject(e.message)
+    ? e.message
+    : {success: false, code, message: e.message};
 }
 
-const addErrorToRequestLog: ErrorRequestHandler = (
+async function expressErrorResponse(
   err: any,
   _req: Request,
   res: Response,
   next: NextFunction
-) => {
-  if (err instanceof ValidationError) {
-    const errType = `Yup Validation Error:`;
-    const message = err.errors.join('<br/>') || 'Yup Validation Error !';
-
-    const error = {
-      code: 422,
-      message,
-      errors:
-        err.inner.length > 0
-          ? err.inner.reduce((acc: any, curVal: any) => {
-              acc[`${curVal.path}`] = curVal.message || curVal.type;
-              return acc;
-            }, {})
-          : {[`${err.path}`]: err.message || err.type},
-    };
-    res.status(422).json(error);
-    return;
+) {
+  if (err instanceof ResponseError.BaseResponse) {
+    return res
+      .status(err.statusCode)
+      .json(generateErrorResponse(err, err.statusCode));
   }
 
-  if (err instanceof multer.MulterError) {
-    res.status(400).json(generateErrorResponseError(err, 400));
-    return;
+  const errorResponse = generateErrorResponse(err, 500);
+  if (
+    err &&
+    typeof errorResponse === 'object' &&
+    'message' in errorResponse &&
+    errorResponse.message.includes('ENOENT')
+  ) {
+    return res.status(500).json(errorResponse);
   }
 
-  res.locals.err = err;
+  if (err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(400).json(generateErrorResponse(err, 400));
+  }
+
   next(err);
-};
+}
 
-export default (): [RequestHandler, ErrorRequestHandler] => [
-  unexpectedRequest,
-  addErrorToRequestLog,
-];
+export default expressErrorResponse;
