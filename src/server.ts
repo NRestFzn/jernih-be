@@ -17,7 +17,7 @@ const optCors: cors.CorsOptions = {
   origin: [
     'http://localhost:3000',
     'http://localhost:5173',
-    'https://jernih-us.vercel.app',
+    'https://portofolio-sendiko.vercel.app'
   ],
 };
 
