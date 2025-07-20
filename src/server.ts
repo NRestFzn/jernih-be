@@ -8,7 +8,7 @@ import requestLogger from './common/middleware/requestLogger';
 import indexRouter from './routes/index';
 import path from 'path';
 import expressErrorResponse from './common/middleware/errorHandler';
-import ResponseError from 'modules/response/ResponseError';
+import ResponseError from './modules/response/ResponseError';
 
 const logger = pino({name: 'server start'});
 const app: Express = express();
