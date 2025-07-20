@@ -8,29 +8,11 @@ import requestLogger from './common/middleware/requestLogger';
 import indexRouter from './routes/index';
 import path from 'path';
 import expressErrorResponse from './common/middleware/errorHandler';
-import ResponseError from './modules/response/ResponseError';
+import ExpressErrorYup from './common/middleware/expressErrorYup';
+import {optCors} from './common/helpers/optCors';
 
 const logger = pino({name: 'server start'});
 const app: Express = express();
-
-const optCors: cors.CorsOptions = {
-  credentials: true,
-  origin: (origin, cb) => {
-    const allowedOrigin = [
-      'http://localhost:3000',
-      'http://localhost:5173',
-      'https://portofolio-sendiko.vercel.app',
-    ];
-
-    console.log('Incomming origin : ' + origin);
-
-    if (!origin || allowedOrigin.includes(origin)) {
-      cb(null, true);
-    } else {
-      cb(new ResponseError.Forbidden('Not allowerd'));
-    }
-  },
-};
 
 // Set the application to trust the reverse proxy
 app.set('trust proxy', true);
@@ -54,5 +36,6 @@ app.use(indexRouter);
 
 // Error handlers
 app.use(expressErrorResponse as ErrorRequestHandler);
+app.use(ExpressErrorYup as ErrorRequestHandler);
 
 export {app, logger};
