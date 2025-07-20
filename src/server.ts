@@ -17,7 +17,7 @@ const optCors: cors.CorsOptions = {
   origin: [
     'http://localhost:3000',
     'http://localhost:5173',
-    'https://portofolio-sendiko.vercel.app'
+    'https://portofolio-sendiko.vercel.app',
   ],
 };
 
@@ -25,10 +25,10 @@ const optCors: cors.CorsOptions = {
 app.set('trust proxy', true);
 
 // Middlewares
+app.use(cors(optCors));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, '/../public')));
-app.use(cors(optCors));
 app.use(helmet());
 app.use(rateLimiter);
 
