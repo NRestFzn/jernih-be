@@ -1,6 +1,6 @@
 import type {NextFunction, Request, Response} from 'express';
 import _ from 'lodash';
-import ResponseError from 'modules/response/ResponseError';
+import ResponseError from '../../modules/response/ResponseError';
 import multer from 'multer';
 
 function generateErrorResponse(

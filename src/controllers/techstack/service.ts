@@ -4,7 +4,7 @@ import {ServiceResponse} from '../../common/models/serviceResponse';
 import {StatusCodes} from 'http-status-codes';
 import {v4} from 'uuid';
 import {del} from '@vercel/blob';
-import ResponseError from 'modules/response/ResponseError';
+import ResponseError from '../../modules/response/ResponseError';
 
 class TechStackService {
   async createTechStack(userId: string, formData: CreateTechStackType) {

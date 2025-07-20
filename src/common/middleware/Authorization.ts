@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import {env} from '../../common/utils/envConfig';
 import {NextFunction, Request, Response} from 'express';
 import {UserType} from 'controllers/user/schema';
-import ResponseError from 'modules/response/ResponseError';
+import ResponseError from '../../modules/response/ResponseError';
 
 // Extend Express Request interface to include userLogin
 declare global {
