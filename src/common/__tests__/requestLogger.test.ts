@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {ErrorRequestHandler} from 'express';
 import {StatusCodes} from 'http-status-codes';
 import request from 'supertest';
 
@@ -17,7 +17,7 @@ describe('Request Logger Middleware', () => {
     app.get('/error', () => {
       throw new Error('Test error');
     });
-    app.use(errorHandler());
+    app.use(errorHandler as ErrorRequestHandler);
   });
 
   describe('Successful requests', () => {

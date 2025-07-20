@@ -1,4 +1,4 @@
-import express, {type Express} from 'express';
+import express, {ErrorRequestHandler, type Express} from 'express';
 import {StatusCodes} from 'http-status-codes';
 import request from 'supertest';
 
@@ -18,7 +18,7 @@ describe('Error Handler Middleware', () => {
       next(error);
     });
 
-    app.use(errorHandler());
+    app.use(errorHandler as ErrorRequestHandler);
   });
 
   it('returns 404 for unknown routes', async () => {

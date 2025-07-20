@@ -8,17 +8,28 @@ import requestLogger from './common/middleware/requestLogger';
 import indexRouter from './routes/index';
 import path from 'path';
 import expressErrorResponse from './common/middleware/errorHandler';
+import ResponseError from 'modules/response/ResponseError';
 
 const logger = pino({name: 'server start'});
 const app: Express = express();
 
 const optCors: cors.CorsOptions = {
   credentials: true,
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'https://portofolio-sendiko.vercel.app',
-  ],
+  origin: (origin, cb) => {
+    const allowedOrigin = [
+      'http://localhost:3000',
+      'http://localhost:5173',
+      'https://portofolio-sendiko.vercel.app',
+    ];
+
+    console.log('Incomming origin : ' + origin);
+
+    if (!origin || allowedOrigin.includes(origin)) {
+      cb(null, true);
+    } else {
+      cb(new ResponseError.Forbidden('Not allowerd'));
+    }
+  },
 };
 
 // Set the application to trust the reverse proxy
