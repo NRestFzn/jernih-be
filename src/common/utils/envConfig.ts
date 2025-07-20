@@ -43,6 +43,14 @@ const envSchema = z.object({
   FIRESTORE_UNIVERSE_DOMAIN: z.string(),
 
   JWT_SECRET_ACCESS_TOKEN: z.string(),
+
+  MAIL_SERVICE: z.string(),
+
+  MAIL_USER: z.string(),
+
+  MAIL_PASSWORD: z.string(),
+
+  MAIL_RECEIVER: z.string(),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

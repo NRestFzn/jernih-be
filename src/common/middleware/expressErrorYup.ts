@@ -12,7 +12,7 @@ async function ExpressErrorYup(
     const errType = `Yup Validation Error:`;
     const message = err.errors.join('<br/>') || 'Yup Validation Error !';
 
-    console.log(`${chalk.red(errType)} ${chalk.green(message)}`);
+    console.log(`${errType} : ${message}`);
 
     const error = {
       code: 422,
