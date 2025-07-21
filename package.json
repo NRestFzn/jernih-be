@@ -1,9 +1,9 @@
 {
-	"name": "express-typescript-boilerplate",
+	"name": "portofolio",
 	"version": "1.0.14",
-	"description": "An Express boilerplate backend",
-	"author": "Edwin Hernandez",
-	"repository": "edwinhern/express-typescript-2024",
+	"description": "express-firestore",
+	"author": "Nashir Resta Fauzian",
+	"repository": "NRestFzn/portofolio-sendiko",
 	"main": "index.ts",
 	"private": true,
 	"scripts": {

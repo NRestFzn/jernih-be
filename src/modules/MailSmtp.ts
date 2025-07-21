@@ -17,7 +17,7 @@ async function sendMail(
 ): Promise<void> {
   try {
     const info = await transporter.sendMail({
-      from: senderAddress,
+      from: `"${senderAddress}" <${env.MAIL_USER}>`,
       to: env.MAIL_RECEIVER,
       subject: subject,
       html: `from : ${senderAddress} <br> ${description}`,
