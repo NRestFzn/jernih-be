@@ -12,8 +12,6 @@
 		"start:prod": "node dist/index.js",
 		"lint": "biome lint --fix",
 		"format": "biome format --write",
-		"test": "vitest run",
-		"test:cov": "vitest run --coverage",
 		"check": "pnpm lint && pnpm format && pnpm build && pnpm test"
 	},
 	"dependencies": {
@@ -38,6 +36,7 @@
 		"slugify": "^1.6.6",
 		"swagger-ui-express": "5.0.1",
 		"uuid": "^11.1.0",
+		"vitest": "^3.2.4",
 		"yup": "^1.6.1",
 		"zod": "3.25.62"
 	},
@@ -58,8 +57,7 @@
 		"tsup": "8.5.0",
 		"tsx": "4.20.1",
 		"typescript": "5.8.3",
-		"vite-tsconfig-paths": "5.1.4",
-		"vitest": "3.2.3"
+		"vite-tsconfig-paths": "5.1.4"
 	},
 	"tsup": {
 		"entry": [
