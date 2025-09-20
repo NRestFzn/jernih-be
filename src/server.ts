@@ -28,7 +28,7 @@ app.set('trust proxy', true);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, '/../public')));
-app.use(cors(optCors));
+app.use(cors());
 app.use(helmet());
 app.use(rateLimiter);
 
