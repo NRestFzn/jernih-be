@@ -12,15 +12,23 @@ import path from 'path';
 const logger = pino({name: 'server start'});
 const app: Express = express();
 
-const optCors: cors.CorsOptions = {
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://jernih-us.vercel.app',
+];
+
+const corsOptions: any = {
+  origin: (origin: string, callback: any) => {
+    console.log('Request datang dari Origin:', origin);
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origin ini tidak diizinkan oleh kebijakan CORS'));
+    }
+  },
   credentials: true,
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'https://jernih-us.vercel.app',
-  ],
 };
-app.use('*', cors(optCors));
 
 // Set the application to trust the reverse proxy
 app.set('trust proxy', true);
@@ -29,7 +37,7 @@ app.set('trust proxy', true);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, '/../public')));
-
+app.use(cors(corsOptions));
 app.use(helmet());
 app.use(rateLimiter);
 
