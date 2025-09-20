@@ -20,6 +20,7 @@ const optCors: cors.CorsOptions = {
     'https://jernih-us.vercel.app',
   ],
 };
+app.use('*', cors(optCors));
 
 // Set the application to trust the reverse proxy
 app.set('trust proxy', true);
@@ -28,7 +29,7 @@ app.set('trust proxy', true);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, '/../public')));
-app.use(cors());
+
 app.use(helmet());
 app.use(rateLimiter);
 
