@@ -18,13 +18,6 @@ const allowedOrigins = [
   'https://jernih-us.vercel.app',
 ];
 
-const allowedOrigins: string[] = [
-  'https://jernih-us.vercel.app', // Domain produksi kamu
-  // Tambahkan domain lain jika perlu, misalnya untuk development:
-  // 'http://localhost:3000',
-  // 'http://localhost:5173'
-];
-
 const corsOptions: CorsOptions = {
   origin: (
     origin: string | undefined,
