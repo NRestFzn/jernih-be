@@ -18,18 +18,6 @@ const allowedOrigins = [
   'https://jernih-us.vercel.app',
 ];
 
-const corsOptions: any = {
-  origin: (origin: string, callback: any) => {
-    console.log('Request datang dari Origin:', origin);
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Origin ini tidak diizinkan oleh kebijakan CORS'));
-    }
-  },
-  credentials: true,
-};
-
 // Set the application to trust the reverse proxy
 app.set('trust proxy', true);
 
@@ -37,7 +25,7 @@ app.set('trust proxy', true);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, '/../public')));
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(helmet());
 app.use(rateLimiter);
 
