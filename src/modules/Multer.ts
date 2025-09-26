@@ -126,7 +126,7 @@ interface UploadFileOptionsParams {
 function getDefaultUploadFileOptions(params: UploadFileOptionsParams = {}) {
   const {
     dest = 'public/uploads/',
-    maxSizeUpload = 25,
+    maxSizeUpload = 100,
     onlyImages = false,
     onlyDocuments = false,
     allowedExt = [],
