@@ -1,4 +1,4 @@
-import cors from 'cors';
+import cors, {CorsOptions} from 'cors';
 import express, {type Express} from 'express';
 import helmet from 'helmet';
 import {pino} from 'pino';
@@ -17,6 +17,34 @@ const allowedOrigins = [
   'http://localhost:5173',
   'https://jernih-us.vercel.app',
 ];
+
+const allowedOrigins: string[] = [
+  'https://jernih-us.vercel.app', // Domain produksi kamu
+  // Tambahkan domain lain jika perlu, misalnya untuk development:
+  // 'http://localhost:3000',
+  // 'http://localhost:5173'
+];
+
+const corsOptions: CorsOptions = {
+  origin: (
+    origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void
+  ) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('This origin is not allowed'));
+    }
+  },
+
+  credentials: true,
+
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+
+  allowedHeaders: 'Content-Type, Authorization',
+
+  optionsSuccessStatus: 204,
+};
 
 // Set the application to trust the reverse proxy
 app.set('trust proxy', true);
